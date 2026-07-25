@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout | Nüwell</title>
+  <!-- Stripe.js -->
+  <script src="https://js.stripe.com/v3/"></script>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --cream: #F9F8F5; --off-white: #F4F3EF; --charcoal: #2A2A2A;
+      --soft-charcoal: #4A4A4A; --sage: #A8B5A2; --sage-dark: #8A9A82;
+      --sage-light: #D4DDD0; --white: #FFFFFF; --max-width: 1100px;
+    }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background-color: var(--cream); color: var(--charcoal); line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { text-decoration: none; color: inherit; transition: color 0.3s ease; }
+    h1, h2, h3 { font-weight: 500; letter-spacing: -0.02em; line-height: 1.2; }
+    .logo-text { font-family: Georgia, "Times New Roman", serif; font-weight: 400; letter-spacing: 0.04em; font-size: 1.55rem; }
+    .logo-img { height: 40px; width: auto; display: block; }
+    .footer-brand .logo-img { height: 36px; margin-bottom: 1rem; filter: brightness(0) invert(1); }
+    .container { width: 100%; max-width: var(--max-width); margin: 0 auto; padding: 0 2rem; }
+    .utility-bar { background: var(--charcoal); color: var(--cream); font-size: 0.78rem; letter-spacing: 0.04em; padding: 0.55rem 0; text-align: center; }
+    .utility-bar span { opacity: 0.85; margin: 0 1.2rem; }
+    .main-nav { background: var(--white); border-bottom: 1px solid rgba(0,0,0,0.06); position: sticky; top: 0; z-index: 1000; }
+    .nav-top { display: flex; justify-content: space-between; align-items: center; height: 72px; max-width: var(--max-width); margin: 0 auto; padding: 0 2rem; }
+    .nav-left { display: flex; align-items: center; gap: 2.5rem; }
+    .nav-right { display: flex; align-items: center; gap: 1.6rem; font-size: 0.9rem; }
+    .nav-right a { color: var(--soft-charcoal); }
+    .cart-icon { position: relative; }
+    .cart-count { position: absolute; top: -8px; right: -10px; background: var(--charcoal); color: white; font-size: 0.65rem; width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    .cat-nav { border-top: 1px solid rgba(0,0,0,0.04); background: var(--white); }
+    .cat-nav-inner { display: flex; justify-content: center; gap: 2.2rem; max-width: var(--max-width); margin: 0 auto; padding: 0.85rem 2rem; list-style: none; flex-wrap: wrap; }
+    .cat-nav a { font-size: 0.88rem; font-weight: 450; color: var(--soft-charcoal); letter-spacing: 0.02em; }
+    .cat-nav a:hover, .cat-nav a.active { color: var(--charcoal); }
+
+    .checkout-section { padding: 4rem 0 6rem; }
+    .checkout-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 3.5rem; }
+    .checkout-form h2 { font-size: 1.5rem; margin-bottom: 1.8rem; }
+    .form-group { margin-bottom: 1.3rem; }
+    .form-group label { display: block; font-size: 0.85rem; margin-bottom: 0.4rem; color: var(--soft-charcoal); }
+    .form-group input, .form-group select {
+      width: 100%; padding: 0.85rem 1rem; border: 1px solid rgba(0,0,0,0.12);
+      background: var(--white); font-size: 0.95rem; color: var(--charcoal); border-radius: 2px;
+    }
+    .form-group input:focus, .form-group select:focus { outline: none; border-color: var(--sage-dark); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+    /* Stripe Card Element styling */
+    #card-element {
+      padding: 0.9rem 1rem;
+      border: 1px solid rgba(0,0,0,0.12);
+      background: var(--white);
+      border-radius: 2px;
+      transition: border-color 0.2s;
+    }
+    #card-element.StripeElement--focus {
+      border-color: var(--sage-dark);
+    }
+    #card-errors {
+      color: #c45c5c;
+      font-size: 0.85rem;
+      margin-top: 0.6rem;
+      min-height: 1.2rem;
+    }
+
+    .order-summary {
+      background: var(--white); padding: 2.2rem; border: 1px solid rgba(0,0,0,0.06);
+      position: sticky; top: 100px;
+    }
+    .order-summary h2 { font-size: 1.3rem; margin-bottom: 1.6rem; }
+    .summary-item { display: flex; justify-content: space-between; margin-bottom: 1rem; font-size: 0.95rem; }
+    .summary-item .name { color: var(--soft-charcoal); }
+    .summary-divider { border-top: 1px solid rgba(0,0,0,0.08); margin: 1.4rem 0; }
+    .summary-total { display: flex; justify-content: space-between; font-size: 1.15rem; font-weight: 500; }
+
+    .btn-primary {
+      display: block; width: 100%; background: var(--charcoal); color: var(--cream);
+      padding: 1rem; font-size: 0.95rem; letter-spacing: 0.04em; border: none;
+      cursor: pointer; margin-top: 1.8rem; text-align: center; transition: background 0.3s ease;
+    }
+    .btn-primary:hover { background: var(--soft-charcoal); }
+    .btn-primary:disabled {
+      background: #aaa; cursor: not-allowed;
+    }
+    .secure-note { text-align: center; font-size: 0.8rem; color: var(--soft-charcoal); margin-top: 1rem; }
+
+    .payment-success {
+      display: none; text-align: center; padding: 3rem 1rem;
+    }
+    .payment-success h2 { margin-bottom: 1rem; color: var(--sage-dark); }
+    .payment-success p { color: var(--soft-charcoal); margin-bottom: 1.5rem; }
+
+    footer { background: var(--charcoal); color: var(--cream); padding: 4.5rem 0 2.5rem; }
+    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 2.5rem; margin-bottom: 3.5rem; }
+    .footer-brand .logo-text { color: var(--cream); font-size: 1.4rem; margin-bottom: 1rem; display: block; }
+    .footer-brand p { opacity: 0.7; font-size: 0.92rem; max-width: 260px; }
+    .footer-col h4 { font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1.2rem; opacity: 0.9; }
+    .footer-col ul { list-style: none; }
+    .footer-col li { margin-bottom: 0.6rem; }
+    .footer-col a { opacity: 0.65; font-size: 0.92rem; }
+    .footer-col a:hover { opacity: 1; }
+    .footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1.8rem; display: flex; justify-content: space-between; font-size: 0.82rem; opacity: 0.5; }
+
+    @media (max-width: 900px) {
+      .checkout-grid { grid-template-columns: 1fr; }
+      .order-summary { position: static; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 600px) {
+      .form-row { grid-template-columns: 1fr; }
+      .footer-grid { grid-template-columns: 1fr; }
+      .footer-bottom { flex-direction: column; gap: 0.8rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+  <div class="utility-bar">
+    <span>Free UK Delivery over £50</span>
+    <span>•</span>
+    <span>Born & Bred in the UK</span>
+    <span>•</span>
+    <span>Lab Tested · Premium Quality</span>
+  </div>
+  <header class="main-nav">
+    <div class="nav-top">
+      <div class="nav-left">
+        <a href="index.html"><img src="logo.png" alt="Nüwell" class="logo-img"></a>
+      </div>
+      <div class="nav-right">
+        <a href="#">Account</a>
+        <a href="checkout.html" class="cart-icon">Cart <span class="cart-count">0</span></a>
+      </div>
+    </div>
+    <nav class="cat-nav">
+      <ul class="cat-nav-inner">
+        <li><a href="oils.html">Oils</a></li>
+        <li><a href="products.html">Capsules</a></li>
+        <li><a href="products.html">Topicals</a></li>
+        <li><a href="products.html">Bundles</a></li>
+        <li><a href="wellbeing.html">Wellbeing</a></li>
+        <li><a href="about.html">Our Story</a></li>
+        <li><a href="checkout.html" class="active">Checkout</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="checkout-section">
+    <div class="container">
+      <div class="checkout-grid" id="checkout-content">
+        <!-- Form -->
+        <div class="checkout-form">
+          <h2>Checkout</h2>
+          <form id="payment-form">
+            <div class="form-group">
+              <label>Email</label>
+              <input type="email" id="email" placeholder="you@example.com" required>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>First name</label>
+                <input type="text" id="first-name" required>
+              </div>
+              <div class="form-group">
+                <label>Last name</label>
+                <input type="text" id="last-name" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Address</label>
+              <input type="text" id="address" placeholder="Street address" required>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label>City</label>
+                <input type="text" id="city" required>
+              </div>
+              <div class="form-group">
+                <label>Postcode</label>
+                <input type="text" id="postcode" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Country</label>
+              <select id="country">
+                <option value="GB">United Kingdom</option>
+                <option value="IE">Ireland</option>
+                <option value="other">Other</option>
+              </select>
+            </div>
+
+            <!-- Stripe Card Element -->
+            <div class="form-group" style="margin-top: 2rem;">
+              <label>Card details</label>
+              <div id="card-element">
+                <!-- Stripe.js mounts here -->
+              </div>
+              <div id="card-errors" role="alert"></div>
+            </div>
+
+            <button type="submit" class="btn-primary" id="submit-button">
+              <span id="button-text">Pay Now</span>
+              <span id="spinner" style="display:none;">Processing…</span>
+            </button>
+            <p class="secure-note">Secured by Stripe · SSL encrypted</p>
+          </form>
+        </div>
+
+        <!-- Order Summary (dynamic) -->
+        <div class="order-summary">
+          <h2>Order Summary</h2>
+          <div id="cart-items"></div>
+          <div class="summary-divider"></div>
+          <div class="summary-item">
+            <span class="name">Subtotal</span>
+            <span id="cart-subtotal">£0.00</span>
+          </div>
+          <div class="summary-item">
+            <span class="name">Shipping</span>
+            <span id="cart-shipping">Free</span>
+          </div>
+          <div class="summary-divider"></div>
+          <div class="summary-total">
+            <span>Total</span>
+            <span id="cart-total">£0.00</span>
+          </div>
+          <a href="products.html" style="display:block; text-align:center; margin-top:1.5rem; font-size:0.9rem; color:var(--soft-charcoal);">← Continue shopping</a>
+        </div>
+      </div>
+
+      <!-- Success state -->
+      <div class="payment-success" id="payment-success">
+        <h2>Thank you</h2>
+        <p>Your order has been received. A confirmation email will be sent shortly.</p>
+        <a href="index.html" class="btn-primary" style="display:inline-block; width:auto; padding: 0.9rem 2.2rem;">Return Home</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html"><img src="logo.png" alt="Nüwell" class="logo-img"></a>
+          <p>Elevated CBD for health, fitness, mental clarity and everyday wellbeing. Crafted with care in the UK.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Shop</h4>
+          <ul>
+            <li><a href="oils.html">Oils</a></li>
+            <li><a href="products.html">Capsules</a></li>
+            <li><a href="products.html">Topicals</a></li>
+            <li><a href="products.html">Bundles</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Explore</h4>
+          <ul>
+            <li><a href="wellbeing.html">Wellbeing</a></li>
+            <li><a href="about.html">Our Story</a></li>
+            <li><a href="checkout.html">Checkout</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Support</h4>
+          <ul>
+            <li><a href="#">Contact</a></li>
+            <li><a href="#">Shipping</a></li>
+            <li><a href="#">Lab Results</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Nüwell. All rights reserved.</span>
+        <span>Premium CBD · UK</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="cart.js"></script>
+  <script>
+    // ============================================
+    // STRIPE SETUP
+    // Replace with your real Publishable Key from Stripe Dashboard
+    // ============================================
+    const STRIPE_PUBLISHABLE_KEY = 'pk_test_51YourPublishableKeyHere';  // <-- REPLACE THIS
+
+    // For demo purposes we use a test key placeholder.
+    // In production: use your real pk_test_... or pk_live_...
+
+    let stripe, cardElement;
+
+    // Initialize Stripe only if a real-looking key is present
+    try {
+      stripe = Stripe(STRIPE_PUBLISHABLE_KEY);
+      const elements = stripe.elements();
+      cardElement = elements.create('card', {
+        style: {
+          base: {
+            fontSize: '16px',
+            color: '#2A2A2A',
+            '::placeholder': { color: '#a0a0a0' },
+            fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+          },
+          invalid: { color: '#c45c5c' }
+        }
+      });
+      cardElement.mount('#card-element');
+
+      cardElement.on('change', (event) => {
+        const displayError = document.getElementById('card-errors');
+        displayError.textContent = event.error ? event.error.message : '';
+      });
+    } catch (e) {
+      console.warn('Stripe not fully initialized – replace the publishable key.');
+      document.getElementById('card-element').innerHTML =
+        '<p style="color:#4A4A4A;font-size:0.9rem;padding:0.5rem 0;">Stripe Card Element will appear here once you add your Publishable Key.</p>';
+    }
+
+    // ---- Cart rendering (same as before) ----
+    function renderCart() {
+      const cart = NuwellCart.getCart();
+      const container = document.getElementById('cart-items');
+      const subtotalEl = document.getElementById('cart-subtotal');
+      const totalEl = document.getElementById('cart-total');
+      const shippingEl = document.getElementById('cart-shipping');
+
+      if (cart.length === 0) {
+        container.innerHTML = '<p style="color:#4A4A4A;font-size:0.95rem;">Your cart is empty.</p>';
+        subtotalEl.textContent = '£0.00';
+        totalEl.textContent = '£0.00';
+        shippingEl.textContent = '—';
+        return;
+      }
+
+      let html = '';
+      cart.forEach(item => {
+        html += `
+          <div class="summary-item" style="align-items:flex-start; margin-bottom:1.2rem;">
+            <div>
+              <div class="name">${item.name}</div>
+              <div style="font-size:0.82rem; color:#4A4A4A; margin-top:0.25rem;">
+                Qty: 
+                <button type="button" onclick="changeQty('${item.id}', ${item.quantity - 1})" style="border:none;background:none;cursor:pointer;font-size:1rem;">−</button>
+                <strong>${item.quantity}</strong>
+                <button type="button" onclick="changeQty('${item.id}', ${item.quantity + 1})" style="border:none;background:none;cursor:pointer;font-size:1rem;">+</button>
+                &nbsp;·&nbsp;
+                <button type="button" onclick="removeItem('${item.id}')" style="border:none;background:none;cursor:pointer;color:#8A9A82;font-size:0.8rem;">Remove</button>
+              </div>
+            </div>
+            <span>£${(item.price * item.quantity).toFixed(2)}</span>
+          </div>
+        `;
+      });
+      container.innerHTML = html;
+
+      const total = NuwellCart.getCartTotal();
+      subtotalEl.textContent = '£' + total.toFixed(2);
+      totalEl.textContent = '£' + total.toFixed(2);
+      shippingEl.textContent = total >= 50 ? 'Free' : '£3.95';
+    }
+
+    function changeQty(id, qty) {
+      if (qty < 1) NuwellCart.removeItem(id);
+      else NuwellCart.updateQuantity(id, qty);
+      renderCart();
+    }
+
+    function removeItem(id) {
+      NuwellCart.removeItem(id);
+      renderCart();
+    }
+
+    // ---- Payment submission ----
+    const form = document.getElementById('payment-form');
+    const submitButton = document.getElementById('submit-button');
+    const buttonText = document.getElementById('button-text');
+    const spinner = document.getElementById('spinner');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const cart = NuwellCart.getCart();
+      if (cart.length === 0) {
+        alert('Your cart is empty.');
+        return;
+      }
+
+      // Disable button
+      submitButton.disabled = true;
+      buttonText.style.display = 'none';
+      spinner.style.display = 'inline';
+
+      const amount = Math.round(NuwellCart.getCartTotal() * 100); // in pence
+
+      /*
+        ============================================================
+        PRODUCTION FLOW (what you need on your backend)
+        ============================================================
+
+        1. Create a PaymentIntent on your server:
+
+           // Node.js example (Express)
+           const paymentIntent = await stripe.paymentIntents.create({
+             amount: amount,               // e.g. 5900 for £59.00
+             currency: 'gbp',
+             automatic_payment_methods: { enabled: true },
+             metadata: {
+               customer_email: email,
+               items: JSON.stringify(cart)
+             }
+           });
+
+           // Return client_secret to the frontend
+
+        2. On the frontend you then do:
+
+           const { error, paymentIntent } = await stripe.confirmCardPayment(
+             clientSecret,
+             { payment_method: { card: cardElement } }
+           );
+
+        ============================================================
+      */
+
+      // ---- DEMO MODE (no real backend) ----
+      // This simulates a successful payment after a short delay.
+      // Replace this block with the real confirmCardPayment call above.
+
+      setTimeout(() => {
+        // Clear cart
+        NuwellCart.clear();
+
+        // Show success
+        document.getElementById('checkout-content').style.display = 'none';
+        document.getElementById('payment-success').style.display = 'block';
+
+        // Reset button (in case user goes back)
+        submitButton.disabled = false;
+        buttonText.style.display = 'inline';
+        spinner.style.display = 'none';
+      }, 1600);
+    });
+
+    // Initial render
+    document.addEventListener('DOMContentLoaded', renderCart);
+    window.addEventListener('cartUpdated', renderCart);
+  </script>
+</body>
+</html>

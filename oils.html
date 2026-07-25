@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CBD Oils | Nüwell</title>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --cream: #F9F8F5; --off-white: #F4F3EF; --charcoal: #2A2A2A;
+      --soft-charcoal: #4A4A4A; --sage: #A8B5A2; --sage-dark: #8A9A82;
+      --sage-light: #D4DDD0; --white: #FFFFFF; --max-width: 1200px;
+    }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background-color: var(--cream); color: var(--charcoal); line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { text-decoration: none; color: inherit; transition: color 0.3s ease; }
+    h1, h2, h3 { font-weight: 500; letter-spacing: -0.02em; line-height: 1.2; }
+    .logo-text { font-family: Georgia, "Times New Roman", serif; font-weight: 400; letter-spacing: 0.04em; font-size: 1.55rem; }
+    .logo-img { height: 40px; width: auto; display: block; }
+    .footer-brand .logo-img { height: 36px; margin-bottom: 1rem; filter: brightness(0) invert(1); }
+    .container { width: 100%; max-width: var(--max-width); margin: 0 auto; padding: 0 2rem; }
+    .utility-bar { background: var(--charcoal); color: var(--cream); font-size: 0.78rem; letter-spacing: 0.04em; padding: 0.55rem 0; text-align: center; }
+    .utility-bar span { opacity: 0.85; margin: 0 1.2rem; }
+    .main-nav { background: var(--white); border-bottom: 1px solid rgba(0,0,0,0.06); position: sticky; top: 0; z-index: 1000; }
+    .nav-top { display: flex; justify-content: space-between; align-items: center; height: 72px; max-width: var(--max-width); margin: 0 auto; padding: 0 2rem; }
+    .nav-left { display: flex; align-items: center; gap: 2.5rem; }
+    .nav-search { display: flex; align-items: center; background: var(--off-white); border-radius: 2px; padding: 0.45rem 0.9rem; width: 220px; }
+    .nav-search input { border: none; background: transparent; outline: none; font-size: 0.88rem; width: 100%; color: var(--charcoal); }
+    .nav-right { display: flex; align-items: center; gap: 1.6rem; font-size: 0.9rem; }
+    .nav-right a { color: var(--soft-charcoal); }
+    .cart-icon { position: relative; }
+    .cart-count { position: absolute; top: -8px; right: -10px; background: var(--charcoal); color: white; font-size: 0.65rem; width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    .cat-nav { border-top: 1px solid rgba(0,0,0,0.04); background: var(--white); }
+    .cat-nav-inner { display: flex; justify-content: center; gap: 2.2rem; max-width: var(--max-width); margin: 0 auto; padding: 0.85rem 2rem; list-style: none; flex-wrap: wrap; }
+    .cat-nav a { font-size: 0.88rem; font-weight: 450; color: var(--soft-charcoal); letter-spacing: 0.02em; }
+    .cat-nav a:hover, .cat-nav a.active { color: var(--charcoal); }
+    .page-header { padding: 4.5rem 0 3rem; text-align: center; background: var(--off-white); }
+    .page-header h1 { font-size: clamp(2rem, 4vw, 2.8rem); margin-bottom: 0.8rem; }
+    .page-header p { color: var(--soft-charcoal); max-width: 520px; margin: 0 auto; }
+    .products-section { padding: 4rem 0 6rem; }
+    .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; }
+    .product-card { background: var(--white); padding: 2.2rem 1.8rem; text-align: center; border: 1px solid rgba(0,0,0,0.04); transition: all 0.3s ease; }
+    .product-card:hover { box-shadow: 0 14px 40px rgba(0,0,0,0.05); }
+    .product-image { 
+      height: 180px; background: var(--off-white); margin-bottom: 1.5rem; 
+      display: flex; flex-direction: column; align-items: center; justify-content: center; 
+      color: var(--sage-dark); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase;
+      gap: 0.7rem;
+    }
+    .product-image img { height: 46px; width: auto; opacity: 0.92; }
+    .product-card h3 { font-size: 1.2rem; margin-bottom: 0.5rem; }
+    .product-card p { color: var(--soft-charcoal); font-size: 0.9rem; margin-bottom: 1.2rem; }
+    .product-price { font-size: 1.1rem; font-weight: 500; margin-bottom: 1.2rem; }
+    .btn-primary { display: inline-block; background: var(--charcoal); color: var(--cream); padding: 0.8rem 1.8rem; font-size: 0.85rem; letter-spacing: 0.04em; border: none; cursor: pointer; transition: all 0.3s ease; }
+    .btn-primary:hover { background: var(--soft-charcoal); }
+    footer { background: var(--charcoal); color: var(--cream); padding: 4.5rem 0 2.5rem; }
+    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 2.5rem; margin-bottom: 3.5rem; }
+    .footer-brand .logo-text { color: var(--cream); font-size: 1.4rem; margin-bottom: 1rem; display: block; }
+    .footer-brand p { opacity: 0.7; font-size: 0.92rem; max-width: 260px; }
+    .footer-col h4 { font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1.2rem; opacity: 0.9; }
+    .footer-col ul { list-style: none; }
+    .footer-col li { margin-bottom: 0.6rem; }
+    .footer-col a { opacity: 0.65; font-size: 0.92rem; }
+    .footer-col a:hover { opacity: 1; }
+    .footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1.8rem; display: flex; justify-content: space-between; font-size: 0.82rem; opacity: 0.5; }
+    @media (max-width: 900px) { .nav-search { display: none; } .footer-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 600px) { .footer-grid { grid-template-columns: 1fr; } .footer-bottom { flex-direction: column; gap: 0.8rem; text-align: center; } }
+  </style>
+</head>
+<body>
+  <div class="utility-bar">
+    <span>Free UK Delivery over £50</span>
+    <span>•</span>
+    <span>Born & Bred in the UK</span>
+    <span>•</span>
+    <span>Lab Tested · Premium Quality</span>
+  </div>
+  <header class="main-nav">
+    <div class="nav-top">
+      <div class="nav-left">
+        <a href="index.html"><img src="logo.png" alt="Nüwell" class="logo-img"></a>
+        <div class="nav-search"><input type="text" placeholder="Search..."></div>
+      </div>
+      <div class="nav-right">
+        <a href="#">Account</a>
+        <a href="checkout.html" class="cart-icon">Cart <span class="cart-count">0</span></a>
+      </div>
+    </div>
+    <nav class="cat-nav">
+      <ul class="cat-nav-inner">
+        <li><a href="oils.html" class="active">Oils</a></li>
+        <li><a href="products.html">Capsules</a></li>
+        <li><a href="products.html">Topicals</a></li>
+        <li><a href="products.html">Bundles</a></li>
+        <li><a href="wellbeing.html">Wellbeing</a></li>
+        <li><a href="about.html">Our Story</a></li>
+        <li><a href="checkout.html">Checkout</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="page-header">
+    <div class="container">
+      <h1>CBD Oils</h1>
+      <p>Premium broad-spectrum and full-spectrum oils crafted for daily balance, mental clarity and recovery.</p>
+    </div>
+  </section>
+
+  <section class="products-section">
+    <div class="container">
+      <div class="products-grid">
+        <div class="product-card">
+          <div class="product-image"><img src="logo.png" alt="Nüwell"><span>500mg</span></div>
+          <h3>Daily Balance 500mg</h3>
+          <p>Gentle everyday support for mental clarity and calm.</p>
+          <div class="product-price">£39.00</div>
+          <button class="btn-primary" data-add-to-cart data-id="daily-500" data-name="Daily Balance 500mg" data-price="39.00">Add to Cart</button>
+        </div>
+        <div class="product-card">
+          <div class="product-image"><img src="logo.png" alt="Nüwell"><span>1000mg</span></div>
+          <h3>Daily Balance 1000mg</h3>
+          <p>Our most popular strength for consistent wellbeing.</p>
+          <div class="product-price">£59.00</div>
+          <button class="btn-primary" data-add-to-cart data-id="daily-1000" data-name="Daily Balance 1000mg" data-price="59.00">Add to Cart</button>
+        </div>
+        <div class="product-card">
+          <div class="product-image"><img src="logo.png" alt="Nüwell"><span>1500mg</span></div>
+          <h3>Daily Balance 1500mg</h3>
+          <p>Higher strength for those seeking deeper support.</p>
+          <div class="product-price">£79.00</div>
+          <button class="btn-primary" data-add-to-cart data-id="daily-1500" data-name="Daily Balance 1500mg" data-price="79.00">Add to Cart</button>
+        </div>
+        <div class="product-card">
+          <div class="product-image"><img src="logo.png" alt="Nüwell"><span>Night</span></div>
+          <h3>Night Ritual Oil</h3>
+          <p>Calming blend designed for evening wind-down and rest.</p>
+          <div class="product-price">£49.00</div>
+          <button class="btn-primary" data-add-to-cart data-id="night-ritual" data-name="Night Ritual Oil" data-price="49.00">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html"><img src="logo.png" alt="Nüwell" class="logo-img"></a>
+          <p>Elevated CBD for health, fitness, mental clarity and everyday wellbeing. Crafted with care in the UK.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Shop</h4>
+          <ul>
+            <li><a href="oils.html">Oils</a></li>
+            <li><a href="products.html">Capsules</a></li>
+            <li><a href="products.html">Topicals</a></li>
+            <li><a href="products.html">Bundles</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Explore</h4>
+          <ul>
+            <li><a href="wellbeing.html">Wellbeing</a></li>
+            <li><a href="about.html">Our Story</a></li>
+            <li><a href="checkout.html">Checkout</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Support</h4>
+          <ul>
+            <li><a href="#">Contact</a></li>
+            <li><a href="#">Shipping</a></li>
+            <li><a href="#">Lab Results</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Nüwell. All rights reserved.</span>
+        <span>Premium CBD · UK</span>
+      </div>
+    </div>
+  </footer>
+  <script src="cart.js"></script>
+</body>
+</html>

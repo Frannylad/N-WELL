@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>All Products | Nüwell</title>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --cream: #F9F8F5; --off-white: #F4F3EF; --charcoal: #2A2A2A;
+      --soft-charcoal: #4A4A4A; --sage: #A8B5A2; --sage-dark: #8A9A82;
+      --sage-light: #D4DDD0; --white: #FFFFFF; --max-width: 1200px;
+    }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background-color: var(--cream); color: var(--charcoal); line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    a { text-decoration: none; color: inherit; transition: color 0.3s ease; }
+    h1, h2, h3 { font-weight: 500; letter-spacing: -0.02em; line-height: 1.2; }
+    .logo-text { font-family: Georgia, "Times New Roman", serif; font-weight: 400; letter-spacing: 0.04em; font-size: 1.55rem; }
+    .logo-img { height: 40px; width: auto; display: block; }
+    .footer-brand .logo-img { height: 36px; margin-bottom: 1rem; filter: brightness(0) invert(1); }
+    .container { width: 100%; max-width: var(--max-width); margin: 0 auto; padding: 0 2rem; }
+    .utility-bar { background: var(--charcoal); color: var(--cream); font-size: 0.78rem; letter-spacing: 0.04em; padding: 0.55rem 0; text-align: center; }
+    .utility-bar span { opacity: 0.85; margin: 0 1.2rem; }
+    .main-nav { background: var(--white); border-bottom: 1px solid rgba(0,0,0,0.06); position: sticky; top: 0; z-index: 1000; }
+    .nav-top { display: flex; justify-content: space-between; align-items: center; height: 72px; max-width: var(--max-width); margin: 0 auto; padding: 0 2rem; }
+    .nav-left { display: flex; align-items: center; gap: 2.5rem; }
+    .nav-search { display: flex; align-items: center; background: var(--off-white); border-radius: 2px; padding: 0.45rem 0.9rem; width: 220px; }
+    .nav-search input { border: none; background: transparent; outline: none; font-size: 0.88rem; width: 100%; color: var(--charcoal); }
+    .nav-right { display: flex; align-items: center; gap: 1.6rem; font-size: 0.9rem; }
+    .nav-right a { color: var(--soft-charcoal); }
+    .cart-icon { position: relative; }
+    .cart-count { position: absolute; top: -8px; right: -10px; background: var(--charcoal); color: white; font-size: 0.65rem; width: 16px; height: 16px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    .cat-nav { border-top: 1px solid rgba(0,0,0,0.04); background: var(--white); }
+    .cat-nav-inner { display: flex; justify-content: center; gap: 2.2rem; max-width: var(--max-width); margin: 0 auto; padding: 0.85rem 2rem; list-style: none; flex-wrap: wrap; }
+    .cat-nav a { font-size: 0.88rem; font-weight: 450; color: var(--soft-charcoal); letter-spacing: 0.02em; }
+    .cat-nav a:hover, .cat-nav a.active { color: var(--charcoal); }
+    .page-header { padding: 4.5rem 0 3rem; text-align: center; background: var(--off-white); }
+    .page-header h1 { font-size: clamp(2rem, 4vw, 2.8rem); margin-bottom: 0.8rem; }
+    .page-header p { color: var(--soft-charcoal); max-width: 520px; margin: 0 auto; }
+
+    /* IMAGE CAROUSEL */
+    .carousel-section {
+      padding: 0 0 2.5rem;
+      background: var(--off-white);
+    }
+    .carousel-wrap {
+      position: relative;
+      max-width: 900px;
+      margin: 0 auto;
+      overflow: hidden;
+      border-radius: 4px;
+    }
+    .carousel-track {
+      display: flex;
+      transition: transform 0.45s ease;
+    }
+    .carousel-slide {
+      min-width: 100%;
+      height: 380px;
+      position: relative;
+    }
+    .carousel-slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    .carousel-btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      background: rgba(255,255,255,0.92);
+      border: none;
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      font-size: 1.3rem;
+      cursor: pointer;
+      color: var(--charcoal);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+      z-index: 5;
+      transition: background 0.2s;
+    }
+    .carousel-btn:hover { background: #fff; }
+    .carousel-btn.prev { left: 14px; }
+    .carousel-btn.next { right: 14px; }
+    .carousel-dots {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      margin-top: 1.2rem;
+    }
+    .carousel-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: rgba(0,0,0,0.2);
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      transition: background 0.25s;
+    }
+    .carousel-dot.active { background: var(--charcoal); }
+    @media (max-width: 700px) {
+      .carousel-slide { height: 260px; }
+    }
+
+    .products-section { padding: 4rem 0 6rem; }
+    .products-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.8rem; }
+    .product-card { background: var(--white); padding: 2rem 1.6rem; text-align: center; border: 1px solid rgba(0,0,0,0.04); transition: all 0.3s ease; }
+    .product-card:hover { box-shadow: 0 14px 40px rgba(0,0,0,0.05); }
+    .product-image { height: 160px; background: var(--off-white); margin-bottom: 1.4rem; display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--sage-dark); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase; gap: 0.6rem; }
+    .product-image img { height: 42px; width: auto; opacity: 0.92; }
+
+    /* FILTER BAR */
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      justify-content: center;
+      margin-bottom: 3rem;
+    }
+    .filter-btn {
+      background: transparent;
+      border: 1px solid rgba(0,0,0,0.12);
+      color: var(--soft-charcoal);
+      padding: 0.55rem 1.3rem;
+      font-size: 0.85rem;
+      letter-spacing: 0.03em;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: all 0.25s ease;
+    }
+    .filter-btn:hover {
+      border-color: var(--charcoal);
+      color: var(--charcoal);
+    }
+    .filter-btn.active {
+      background: var(--charcoal);
+      color: var(--cream);
+      border-color: var(--charcoal);
+    }
+    .product-card.hidden {
+      display: none;
+    }
+    .no-results {
+      text-align: center;
+      color: var(--soft-charcoal);
+      padding: 3rem 0;
+      display: none;
+      width: 100%;
+    }
+
+    .product-card h3 { font-size: 1.1rem; margin-bottom: 0.4rem; }
+    .product-card p { color: var(--soft-charcoal); font-size: 0.88rem; margin-bottom: 1rem; }
+    .product-price { font-size: 1.05rem; font-weight: 500; margin-bottom: 1.1rem; }
+    .btn-primary { display: inline-block; background: var(--charcoal); color: var(--cream); padding: 0.75rem 1.6rem; font-size: 0.82rem; letter-spacing: 0.04em; border: none; cursor: pointer; transition: all 0.3s ease; }
+    .btn-primary:hover { background: var(--soft-charcoal); }
+    footer { background: var(--charcoal); color: var(--cream); padding: 4.5rem 0 2.5rem; }
+    .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 2.5rem; margin-bottom: 3.5rem; }
+    .footer-brand .logo-text { color: var(--cream); font-size: 1.4rem; margin-bottom: 1rem; display: block; }
+    .footer-brand p { opacity: 0.7; font-size: 0.92rem; max-width: 260px; }
+    .footer-col h4 { font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1.2rem; opacity: 0.9; }
+    .footer-col ul { list-style: none; }
+    .footer-col li { margin-bottom: 0.6rem; }
+    .footer-col a { opacity: 0.65; font-size: 0.92rem; }
+    .footer-col a:hover { opacity: 1; }
+    .footer-bottom { border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1.8rem; display: flex; justify-content: space-between; font-size: 0.82rem; opacity: 0.5; }
+    @media (max-width: 900px) { .nav-search { display: none; } .footer-grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 600px) { .footer-grid { grid-template-columns: 1fr; } .footer-bottom { flex-direction: column; gap: 0.8rem; text-align: center; } }
+  </style>
+</head>
+<body>
+  <div class="utility-bar">
+    <span>Free UK Delivery over £50</span>
+    <span>•</span>
+    <span>Born & Bred in the UK</span>
+    <span>•</span>
+    <span>Lab Tested · Premium Quality</span>
+  </div>
+  <header class="main-nav">
+    <div class="nav-top">
+      <div class="nav-left">
+        <a href="index.html"><img src="logo.png" alt="Nüwell" class="logo-img"></a>
+        <div class="nav-search"><input type="text" placeholder="Search..."></div>
+      </div>
+      <div class="nav-right">
+        <a href="#">Account</a>
+        <a href="checkout.html" class="cart-icon">Cart <span class="cart-count">0</span></a>
+      </div>
+    </div>
+    <nav class="cat-nav">
+      <ul class="cat-nav-inner">
+        <li><a href="oils.html">Oils</a></li>
+        <li><a href="products.html" class="active">Capsules</a></li>
+        <li><a href="products.html">Topicals</a></li>
+        <li><a href="products.html">Bundles</a></li>
+        <li><a href="wellbeing.html">Wellbeing</a></li>
+        <li><a href="about.html">Our Story</a></li>
+        <li><a href="checkout.html">Checkout</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <section class="page-header">
+    <div class="container">
+      <h1>All Products</h1>
+      <p>Explore our full range of premium CBD oils, capsules, topicals and curated bundles.</p>
+    </div>
+  </section>
+
+  <!-- VISUAL CAROUSEL -->
+  <section class="carousel-section">
+    <div class="container">
+      <div class="carousel-wrap">
+        <div class="carousel-track" id="carousel-track">
+          <div class="carousel-slide"><img src="slide1.jpg" alt="Nüwell active lifestyle"></div>
+          <div class="carousel-slide"><img src="slide2.jpg" alt="Nüwell calm wellness"></div>
+          <div class="carousel-slide"><img src="slide3.jpg" alt="Nüwell recovery"></div>
+          <div class="carousel-slide"><img src="slide4.jpg" alt="Nüwell daily ritual"></div>
+          <div class="carousel-slide"><img src="slide5.jpg" alt="Nüwell mindful moment"></div>
+          <div class="carousel-slide"><img src="slide6.jpg" alt="Nüwell spa collection"></div>
+        </div>
+        <button class="carousel-btn prev" id="carousel-prev" aria-label="Previous">‹</button>
+        <button class="carousel-btn next" id="carousel-next" aria-label="Next">›</button>
+      </div>
+      <div class="carousel-dots" id="carousel-dots"></div>
+    </div>
+  </section>
+
+  <section class="products-section">
+    <div class="container">
+      <!-- FILTER BAR -->
+      <div class="filter-bar" id="filter-bar">
+        <button class="filter-btn active" data-filter="all">All</button>
+        <button class="filter-btn" data-filter="oils">Oils</button>
+        <button class="filter-btn" data-filter="capsules">Capsules</button>
+        <button class="filter-btn" data-filter="topicals">Topicals</button>
+        <button class="filter-btn" data-filter="bundles">Bundles</button>
+        <button class="filter-btn" data-filter="night">Night</button>
+        <button class="filter-btn" data-filter="recovery">Recovery</button>
+      </div>
+
+      <div class="products-grid" id="products-grid">
+        <div class="product-card" data-category="oils">
+          <div class="product-image"><img src="logo.png" alt="Nüwell"><span>Oil</span></div>
+          <h3>Daily Balance Oil</h3>
+          <p>Broad-spectrum CBD for everyday equilibrium.</p>
+          <div class="product-price">From £39</div>
+          <a href="oils.html" class="btn-primary">View Oils</a>
+        </div>
+        <div class="product-card" data-category="capsules">
+          <div class="product-image"><img src="logo.png" alt="Nüwell"><span>Capsules</span></div>
+          <h3>Clarity Capsules</h3>
+          <p>Convenient daily capsules for mental focus.</p>
+          <div class="product-price">£34.00</div>
+          <button class="btn-primary" data-add-to-cart data-id="clarity-capsules" data-name="Clarity Capsules" data-price="34.00">Add to Cart</button>
+        </div>
+        <div class="product-card" data-category="topicals recovery">
+          <div class="product-image"><img src="logo.png" alt="Nüwell"><span>Topical</span></div>
+          <h3>Recovery Balm</h3>
+          <p>Soothing balm for post-activity recovery.</p>
+          <div class="product-price">£29.00</div>
+          <button class="btn-primary" data-add-to-cart data-id="recovery-balm" data-name="Recovery Balm" data-price="29.00">Add to Cart</button>
+        </div>
+        <div class="product-card" data-category="bundles">
+          <div class="product-image"><img src="logo.png" alt="Nüwell"><span>Bundle</span></div>
+          <h3>Daily Ritual Bundle</h3>
+          <p>Oil + Capsules for complete daily support.</p>
+          <div class="product-price">£69.00</div>
+          <button class="btn-primary" data-add-to-cart data-id="daily-bundle" data-name="Daily Ritual Bundle" data-price="69.00">Add to Cart</button>
+        </div>
+        <div class="product-card" data-category="oils night">
+          <div class="product-image"><img src="logo.png" alt="Nüwell"><span>Night</span></div>
+          <h3>Night Ritual Oil</h3>
+          <p>Calming evening formula for deeper rest.</p>
+          <div class="product-price">£49.00</div>
+          <button class="btn-primary" data-add-to-cart data-id="night-ritual" data-name="Night Ritual Oil" data-price="49.00">Add to Cart</button>
+        </div>
+        <div class="product-card" data-category="recovery">
+          <div class="product-image"><img src="logo.png" alt="Nüwell"><span>Active</span></div>
+          <h3>Active Recovery</h3>
+          <p>Support for training and physical recovery.</p>
+          <div class="product-price">£45.00</div>
+          <button class="btn-primary" data-add-to-cart data-id="active-recovery" data-name="Active Recovery" data-price="45.00">Add to Cart</button>
+        </div>
+      </div>
+      <p class="no-results" id="no-results">No products match this filter.</p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html"><img src="logo.png" alt="Nüwell" class="logo-img"></a>
+          <p>Elevated CBD for health, fitness, mental clarity and everyday wellbeing. Crafted with care in the UK.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Shop</h4>
+          <ul>
+            <li><a href="oils.html">Oils</a></li>
+            <li><a href="products.html">Capsules</a></li>
+            <li><a href="products.html">Topicals</a></li>
+            <li><a href="products.html">Bundles</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Explore</h4>
+          <ul>
+            <li><a href="wellbeing.html">Wellbeing</a></li>
+            <li><a href="about.html">Our Story</a></li>
+            <li><a href="checkout.html">Checkout</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Support</h4>
+          <ul>
+            <li><a href="#">Contact</a></li>
+            <li><a href="#">Shipping</a></li>
+            <li><a href="#">Lab Results</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Nüwell. All rights reserved.</span>
+        <span>Premium CBD · UK</span>
+      </div>
+    </div>
+  </footer>
+  <script src="cart.js"></script>
+
+  <script>
+    // Image Carousel
+    (function() {
+      const track = document.getElementById('carousel-track');
+      const prevBtn = document.getElementById('carousel-prev');
+      const nextBtn = document.getElementById('carousel-next');
+      const dotsContainer = document.getElementById('carousel-dots');
+      if (!track) return;
+
+      const slides = track.querySelectorAll('.carousel-slide');
+      let current = 0;
+      const total = slides.length;
+
+      // Create dots
+      slides.forEach((_, i) => {
+        const dot = document.createElement('button');
+        dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+        dot.setAttribute('aria-label', 'Go to slide ' + (i + 1));
+        dot.addEventListener('click', () => goTo(i));
+        dotsContainer.appendChild(dot);
+      });
+
+      const dots = dotsContainer.querySelectorAll('.carousel-dot');
+
+      function goTo(index) {
+        current = (index + total) % total;
+        track.style.transform = 'translateX(-' + (current * 100) + '%)';
+        dots.forEach((d, i) => d.classList.toggle('active', i === current));
+      }
+
+      prevBtn.addEventListener('click', () => goTo(current - 1));
+      nextBtn.addEventListener('click', () => goTo(current + 1));
+
+      // Auto-play every 5s
+      setInterval(() => goTo(current + 1), 5000);
+
+      // Touch swipe support
+      let startX = 0;
+      track.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, {passive: true});
+      track.addEventListener('touchend', e => {
+        const diff = startX - e.changedTouches[0].clientX;
+        if (Math.abs(diff) > 50) {
+          if (diff > 0) goTo(current + 1);
+          else goTo(current - 1);
+        }
+      }, {passive: true});
+    })();
+  </script>
+
+
+  <script>
+    // Product Filtering
+    document.addEventListener('DOMContentLoaded', () => {
+      const filterBtns = document.querySelectorAll('.filter-btn');
+      const productCards = document.querySelectorAll('.product-card');
+      const noResults = document.getElementById('no-results');
+
+      filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          // Update active state
+          filterBtns.forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+
+          const filter = btn.dataset.filter;
+          let visibleCount = 0;
+
+          productCards.forEach(card => {
+            const categories = card.dataset.category || '';
+            if (filter === 'all' || categories.includes(filter)) {
+              card.classList.remove('hidden');
+              visibleCount++;
+            } else {
+              card.classList.add('hidden');
+            }
+          });
+
+          noResults.style.display = visibleCount === 0 ? 'block' : 'none';
+        });
+      });
+    });
+  </script>
+
+</body>
+</html>

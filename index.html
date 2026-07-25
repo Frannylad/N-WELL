@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Nüwell | Elevated Wellbeing</title>
+  <meta name="description" content="Nüwell – Premium CBD for health, fitness, mental clarity and everyday wellbeing. Luxury wellness crafted with care.">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    :root {
+      --cream: #F9F8F5; --off-white: #F4F3EF; --charcoal: #2A2A2A;
+      --soft-charcoal: #4A4A4A; --sage: #A8B5A2; --sage-dark: #8A9A82;
+      --sage-light: #D4DDD0; --white: #FFFFFF; --max-width: 1200px;
+    }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background-color: var(--cream); color: var(--charcoal); line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+    img { max-width: 100%; display: block; }
+    a { text-decoration: none; color: inherit; transition: color 0.3s ease; }
+    h1, h2, h3, h4 { font-weight: 500; letter-spacing: -0.02em; line-height: 1.2; }
+    .logo-text { font-family: Georgia, "Times New Roman", serif; font-weight: 400; letter-spacing: 0.04em; font-size: 1.55rem; }
+    .logo-img { height: 40px; width: auto; display: block; }
+    .footer-brand .logo-img { height: 36px; margin-bottom: 1rem; filter: brightness(0) invert(1); }
+    .container { width: 100%; max-width: var(--max-width); margin: 0 auto; padding: 0 2rem; }
+    section { padding: 6.5rem 0; }
+
+    /* TOP UTILITY BAR */
+    .utility-bar {
+      background: var(--charcoal); color: var(--cream); font-size: 0.78rem;
+      letter-spacing: 0.04em; padding: 0.55rem 0; text-align: center;
+    }
+    .utility-bar span { opacity: 0.85; margin: 0 1.2rem; }
+
+    /* MAIN NAV */
+    .main-nav {
+      background: var(--white); border-bottom: 1px solid rgba(0,0,0,0.06);
+      position: sticky; top: 0; z-index: 1000;
+    }
+    .nav-top {
+      display: flex; justify-content: space-between; align-items: center;
+      height: 72px; max-width: var(--max-width); margin: 0 auto; padding: 0 2rem;
+    }
+    .nav-left { display: flex; align-items: center; gap: 2.5rem; }
+    .nav-search {
+      display: flex; align-items: center; background: var(--off-white);
+      border-radius: 2px; padding: 0.45rem 0.9rem; width: 220px;
+    }
+    .nav-search input {
+      border: none; background: transparent; outline: none; font-size: 0.88rem;
+      width: 100%; color: var(--charcoal);
+    }
+    .nav-search input::placeholder { color: #999; }
+    .nav-right { display: flex; align-items: center; gap: 1.6rem; font-size: 0.9rem; }
+    .nav-right a { color: var(--soft-charcoal); }
+    .nav-right a:hover { color: var(--charcoal); }
+    .cart-icon { position: relative; }
+    .cart-count {
+      position: absolute; top: -8px; right: -10px; background: var(--charcoal);
+      color: white; font-size: 0.65rem; width: 16px; height: 16px;
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    }
+
+    /* CATEGORY NAV */
+    .cat-nav {
+      border-top: 1px solid rgba(0,0,0,0.04); background: var(--white);
+    }
+    .cat-nav-inner {
+      display: flex; justify-content: center; gap: 2.2rem;
+      max-width: var(--max-width); margin: 0 auto; padding: 0.85rem 2rem;
+      list-style: none; flex-wrap: wrap;
+    }
+    .cat-nav a {
+      font-size: 0.88rem; font-weight: 450; color: var(--soft-charcoal);
+      letter-spacing: 0.02em; padding: 0.2rem 0;
+    }
+    .cat-nav a:hover, .cat-nav a.active { color: var(--charcoal); }
+    .cat-nav .sale { color: #C47B3A; font-weight: 500; }
+
+    /* HERO */
+    .hero {
+      min-height: 78vh; display: flex; align-items: center; justify-content: center;
+      text-align: center; background: linear-gradient(180deg, var(--cream) 0%, var(--off-white) 100%);
+    }
+    .hero-content { max-width: 720px; padding: 0 2rem; }
+    .hero-sub {
+      font-size: 0.85rem; color: var(--sage-dark); letter-spacing: 0.14em;
+      text-transform: uppercase; margin-bottom: 1.8rem;
+    }
+    .hero-logo {
+      margin-bottom: 1.8rem;
+    }
+    .hero-logo img {
+      height: clamp(70px, 12vw, 110px);
+      width: auto;
+      margin: 0 auto;
+      display: block;
+    }
+    .hero-tagline {
+      font-size: clamp(1.1rem, 2.2vw, 1.35rem); color: var(--soft-charcoal);
+      margin-bottom: 2.8rem; max-width: 480px; margin-left: auto; margin-right: auto;
+    }
+    .btn-primary {
+      display: inline-block; background: var(--charcoal); color: var(--cream);
+      padding: 0.95rem 2.2rem; font-size: 0.88rem; letter-spacing: 0.05em;
+      border: none; cursor: pointer; transition: all 0.3s ease; border-radius: 1px;
+    }
+    .btn-primary:hover { background: var(--soft-charcoal); transform: translateY(-1px); }
+    .btn-secondary {
+      display: inline-block; background: transparent; color: var(--charcoal);
+      padding: 0.95rem 2.2rem; font-size: 0.88rem; letter-spacing: 0.05em;
+      border: 1px solid var(--charcoal); margin-left: 0.9rem; transition: all 0.3s ease;
+    }
+    .btn-secondary:hover { background: var(--charcoal); color: var(--cream); }
+
+    /* BENEFITS */
+    .benefits { background: var(--white); }
+    .section-header { text-align: center; max-width: 600px; margin: 0 auto 4rem; }
+    .section-header h2 { font-size: clamp(1.9rem, 3.5vw, 2.5rem); margin-bottom: 1rem; }
+    .section-header p { color: var(--soft-charcoal); font-size: 1.05rem; }
+    .benefits-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 2rem;
+    }
+    .benefit-card {
+      background: var(--cream); padding: 2.5rem 1.8rem; text-align: center;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .benefit-card:hover { transform: translateY(-3px); box-shadow: 0 12px 36px rgba(0,0,0,0.04); }
+    .benefit-icon {
+      width: 44px; height: 44px; margin: 0 auto 1.4rem; background: var(--sage-light);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      color: var(--sage-dark); font-size: 1.1rem;
+    }
+    .benefit-card h3 { font-size: 1.15rem; margin-bottom: 0.7rem; }
+    .benefit-card p { color: var(--soft-charcoal); font-size: 0.92rem; }
+
+    /* PRODUCTS TEASER */
+    .products { background: var(--cream); }
+    .products-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.8rem;
+    }
+    .product-card {
+      background: var(--white); padding: 2rem 1.8rem; text-align: center;
+      border: 1px solid rgba(0,0,0,0.04); transition: all 0.3s ease;
+    }
+    .product-card:hover { box-shadow: 0 14px 40px rgba(0,0,0,0.05); }
+    .product-image {
+      height: 160px; background: var(--off-white); margin-bottom: 1.5rem;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      color: var(--sage-dark); font-size: 0.75rem; letter-spacing: 0.08em; text-transform: uppercase;
+      gap: 0.6rem;
+    }
+    .product-image img { height: 42px; width: auto; opacity: 0.92; }
+    .product-card h3 { font-size: 1.15rem; margin-bottom: 0.4rem; }
+    .product-card p { color: var(--soft-charcoal); font-size: 0.88rem; margin-bottom: 1.1rem; }
+    .product-price { font-size: 1.05rem; font-weight: 500; margin-bottom: 1.1rem; }
+
+    /* CTA */
+    .cta-band { background: var(--sage-light); text-align: center; padding: 5rem 2rem; }
+    .cta-band h2 { font-size: clamp(1.7rem, 3vw, 2.2rem); margin-bottom: 1rem; }
+    .cta-band p { color: var(--soft-charcoal); margin-bottom: 2rem; }
+
+    /* FOOTER */
+    footer { background: var(--charcoal); color: var(--cream); padding: 4.5rem 0 2.5rem; }
+    .footer-grid {
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 2.5rem; margin-bottom: 3.5rem;
+    }
+    .footer-brand .logo-text { color: var(--cream); font-size: 1.4rem; margin-bottom: 1rem; display: block; }
+    .footer-brand p { opacity: 0.7; font-size: 0.92rem; max-width: 260px; }
+    .footer-col h4 {
+      font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase;
+      margin-bottom: 1.2rem; opacity: 0.9;
+    }
+    .footer-col ul { list-style: none; }
+    .footer-col li { margin-bottom: 0.6rem; }
+    .footer-col a { opacity: 0.65; font-size: 0.92rem; }
+    .footer-col a:hover { opacity: 1; }
+    .footer-bottom {
+      border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1.8rem;
+      display: flex; justify-content: space-between; font-size: 0.82rem; opacity: 0.5;
+    }
+
+    @media (max-width: 900px) {
+      .nav-search { display: none; }
+      .cat-nav-inner { gap: 1.4rem; justify-content: flex-start; overflow-x: auto; }
+      .footer-grid { grid-template-columns: 1fr 1fr; }
+      .btn-secondary { margin-left: 0; margin-top: 0.8rem; display: block; }
+    }
+    @media (max-width: 600px) {
+      .footer-grid { grid-template-columns: 1fr; }
+      .footer-bottom { flex-direction: column; gap: 0.8rem; text-align: center; }
+      section { padding: 4rem 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- UTILITY BAR -->
+  <div class="utility-bar">
+    <span>Free UK Delivery over £50</span>
+    <span>•</span>
+    <span>Born & Bred in the UK</span>
+    <span>•</span>
+    <span>Lab Tested · Premium Quality</span>
+  </div>
+
+  <!-- MAIN NAV -->
+  <header class="main-nav">
+    <div class="nav-top">
+      <div class="nav-left">
+        <a href="index.html"><img src="logo.png" alt="Nüwell" class="logo-img"></a>
+        <div class="nav-search">
+          <input type="text" placeholder="Search...">
+        </div>
+      </div>
+      <div class="nav-right">
+        <a href="#">Account</a>
+        <a href="checkout.html" class="cart-icon">
+          Cart
+          <span class="cart-count">0</span>
+        </a>
+      </div>
+    </div>
+    <nav class="cat-nav">
+      <ul class="cat-nav-inner">
+        <li><a href="oils.html">Oils</a></li>
+        <li><a href="products.html">Capsules</a></li>
+        <li><a href="products.html">Topicals</a></li>
+        <li><a href="products.html">Bundles</a></li>
+        <li><a href="wellbeing.html">Wellbeing</a></li>
+        <li><a href="about.html">Our Story</a></li>
+        <li><a href="checkout.html">Checkout</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-content">
+      <p class="hero-sub">Premium CBD · Crafted for Modern Life</p>
+      <div class="hero-logo"><img src="logo.png" alt="Nüwell"></div>
+      <p class="hero-tagline">
+        Elevated wellbeing for mind, body and everyday performance. Pure. Considered. Exceptional.
+      </p>
+      <div>
+        <a href="products.html" class="btn-primary">Explore the Collection</a>
+        <a href="about.html" class="btn-secondary">Our Approach</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- BENEFITS -->
+  <section class="benefits">
+    <div class="container">
+      <div class="section-header">
+        <h2>Designed for how you live</h2>
+        <p>Four pillars of modern wellbeing, supported by carefully formulated CBD.</p>
+      </div>
+      <div class="benefits-grid">
+        <div class="benefit-card">
+          <div class="benefit-icon">◈</div>
+          <h3>Mental Clarity</h3>
+          <p>Support focus and calm in a busy world. A daily ritual for clearer thinking and emotional balance.</p>
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-icon">◎</div>
+          <h3>Physical Recovery</h3>
+          <p>Help your body restore after movement. Ideal for active lifestyles and post-training recovery.</p>
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-icon">◇</div>
+          <h3>Restful Balance</h3>
+          <p>Encourage deeper, more restorative rest. Wind down with intention and wake up renewed.</p>
+        </div>
+        <div class="benefit-card">
+          <div class="benefit-icon">○</div>
+          <h3>Everyday Wellbeing</h3>
+          <p>A foundation for long-term balance. Consistent support for how you feel, day after day.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRODUCTS -->
+  <section class="products">
+    <div class="container">
+      <div class="section-header">
+        <h2>The Collection</h2>
+        <p>Thoughtfully formulated CBD for every part of your day.</p>
+      </div>
+      <div class="products-grid">
+        <div class="product-card">
+          <div class="product-image"><img src="logo.png" alt="Nüwell"><span>Daily Oil</span></div>
+          <h3>Daily Balance Oil</h3>
+          <p>Broad-spectrum CBD for everyday mental and physical equilibrium.</p>
+          <div class="product-price">From £39</div>
+          <a href="oils.html" class="btn-secondary" style="padding: 0.65rem 1.5rem; font-size: 0.82rem;">View Product</a>
+        </div>
+        <div class="product-card">
+          <div class="product-image"><img src="logo.png" alt="Nüwell"><span>Recovery</span></div>
+          <h3>Active Recovery</h3>
+          <p>Formulated to support the body after training and movement.</p>
+          <div class="product-price">From £45</div>
+          <a href="products.html" class="btn-secondary" style="padding: 0.65rem 1.5rem; font-size: 0.82rem;">View Product</a>
+        </div>
+        <div class="product-card">
+          <div class="product-image"><img src="logo.png" alt="Nüwell"><span>Night</span></div>
+          <h3>Night Ritual</h3>
+          <p>A calming blend designed to prepare mind and body for deep rest.</p>
+          <div class="product-price">From £42</div>
+          <a href="products.html" class="btn-secondary" style="padding: 0.65rem 1.5rem; font-size: 0.82rem;">View Product</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-band">
+    <h2>Begin your Nüwell ritual</h2>
+    <p>Premium CBD, designed with elegance and intention.</p>
+    <a href="checkout.html" class="btn-primary">Shop the Collection</a>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html"><img src="logo.png" alt="Nüwell" class="logo-img"></a>
+          <p>Elevated CBD for health, fitness, mental clarity and everyday wellbeing. Crafted with care in the UK.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Shop</h4>
+          <ul>
+            <li><a href="oils.html">Oils</a></li>
+            <li><a href="products.html">Capsules</a></li>
+            <li><a href="products.html">Topicals</a></li>
+            <li><a href="products.html">Bundles</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Explore</h4>
+          <ul>
+            <li><a href="wellbeing.html">Wellbeing</a></li>
+            <li><a href="about.html">Our Story</a></li>
+            <li><a href="checkout.html">Checkout</a></li>
+          </ul>
+        </div>
+        <div class="footer-col">
+          <h4>Support</h4>
+          <ul>
+            <li><a href="#">Contact</a></li>
+            <li><a href="#">Shipping</a></li>
+            <li><a href="#">Lab Results</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 Nüwell. All rights reserved.</span>
+        <span>Premium CBD · UK</span>
+      </div>
+    </div>
+  </footer>
+  <script src="cart.js"></script>
+</body>
+</html>
